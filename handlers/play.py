@@ -77,7 +77,7 @@ async def generate_cover(requested_by, title, views, duration, thumbnail):
     img = Image.open("temp.png")
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("etc/font.otf", 32)
-    draw.text((205, 550), f"Title: {title}", (51, 215, 255), font=font)
+    draw.text((205, 550), f"Title: {title}", (255, 255, 255), font=font)
     draw.text(
         (205, 590), f"Duration: {duration}", (255, 255, 255), font=font
     )
@@ -113,14 +113,14 @@ async def play(_, message: Message):
                     [
                         InlineKeyboardButton(
                             text="Join Updates Channel ",
-                            url=f"https://t.me/daisyxupdates")
+                            url=f"https://t.me/HayakaRyuUpdates")
 
                     ]
                 ]
             )
         file_name = get_file_name(audio)
         title = file_name
-        thumb_name = "https://telegra.ph/file/f6086f8909fbfeb0844f2.png"
+        thumb_name = "https://telegra.ph/file/f7f738f620b8665964c6a.png"
         thumbnail = thumb_name
         duration = round(audio.duration / 60)
         views = "Locally added"
@@ -190,7 +190,7 @@ async def play(_, message: Message):
         await message.reply_photo(
         photo="final.png",
         reply_markup=keyboard,
-        caption="▶️ **Playing** here the song requested by {} via DaisyXmusic 😜".format(
+        caption="▶️ **Playing** here the song requested by {} via Music VC Bot".format(
         message.from_user.mention()
         ),
     )
