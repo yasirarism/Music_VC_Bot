@@ -14,14 +14,14 @@ async def start(_, message: Message):
             [ 
                 [
                     InlineKeyboardButton(
-                        "📜 User Manual 📜", url="https://telegra.ph/Bemro-VC-Plus-04-09")
+                        "User Manual", url="https://telegra.ph/Bemro-VC-Plus-04-09")
                   ],[
                     InlineKeyboardButton(
-                        "👨‍💻 Updates 👨‍💻", url="https://t.me/daisyxupdates"
+                        "Channel", url="https://t.me/HayakaRyuUpdates"
                     )
                 ],[ 
                     InlineKeyboardButton(
-                        "Support Chat 🎙️", url="https://t.me/DaisySupport_Official"
+                        "Support Chat", url="https://t.me/MusicVCChat"
                     )]
             ]
         ),
@@ -35,7 +35,7 @@ async def gstart(_, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🎙️ Support Group 🎙️", url="https://t.me/daisysupport_Official")
+                        "Support Group", url="https://t.me/MusicVCChat")
                 ]
             ]
         )
