@@ -56,8 +56,7 @@ def changeImageSize(maxWidth, maxHeight, image):
     heightRatio = maxHeight / image.size[1]
     newWidth = int(widthRatio * image.size[0])
     newHeight = int(heightRatio * image.size[1])
-    newImage = image.resize((newWidth, newHeight))
-    return newImage
+    return image.resize((newWidth, newHeight))
 
 async def generate_cover(requested_by, title, views, duration, thumbnail):
     async with aiohttp.ClientSession() as session:
@@ -109,15 +108,15 @@ async def play(_, message: Message):
                 f"❌ Videos longer than {DURATION_LIMIT} minute(s) aren't allowed to play!"
             )
         keyboard = InlineKeyboardMarkup(
+            [
                 [
-                    [
-                        InlineKeyboardButton(
-                            text="Join Updates Channel ",
-                            url=f"https://t.me/HayakaRyuUpdates")
-
-                    ]
+                    InlineKeyboardButton(
+                        text="Join Updates Channel ",
+                        url="https://t.me/HayakaRyuUpdates",
+                    )
                 ]
-            )
+            ]
+        )
         file_name = get_file_name(audio)
         title = file_name
         thumb_name = "https://telegra.ph/file/f7f738f620b8665964c6a.png"
@@ -125,7 +124,7 @@ async def play(_, message: Message):
         duration = round(audio.duration / 60)
         views = "Locally added"
         requested_by = message.from_user.first_name
-        await generate_cover(requested_by, title, views, duration, thumbnail)  
+        await generate_cover(requested_by, title, views, duration, thumbnail)
         file_path = await converter.convert(
             (await message.reply_to_message.download(file_name))
             if not path.isfile(path.join("downloads", file_name)) else file_name
@@ -137,11 +136,9 @@ async def play(_, message: Message):
         user_id = message.from_user.id
         sender_name = message.from_user.first_name
         user_name = message.from_user.first_name
-        rpk = "["+user_name+"](tg://user?id="+str(user_id)+")"
+        rpk = f"[{user_name}](tg://user?id={str(user_id)})"
 
-        query = ''
-        for i in message.command[1:]:
-            query += ' ' + str(i)
+        query = ''.join(f' {str(i)}' for i in message.command[1:])
         print(query)
         await lel.edit("🎵 **Processing**")
         ydl_opts = {"format": "bestaudio[ext=m4a]"}
@@ -160,7 +157,7 @@ async def play(_, message: Message):
 
         except Exception as e:
             await lel.edit("Song not found.Try another song or maybe spell it properly.")
-            print(str(e))
+            print(e)
             return
 
         keyboard = InlineKeyboardMarkup(
@@ -174,25 +171,22 @@ async def play(_, message: Message):
                 ]
             )
         requested_by = message.from_user.first_name
-        await generate_cover(requested_by, title, views, duration, thumbnail)  
+        await generate_cover(requested_by, title, views, duration, thumbnail)
         file_path = await converter.convert(youtube.download(url))
-  
+
     if message.chat.id in callsmusic.pytgcalls.active_calls:
         position = await queues.put(message.chat.id, file=file_path)
         await message.reply_photo(
         photo="final.png", 
         caption=f"#⃣ Your requested song **queued** at position {position}!",
         reply_markup=keyboard)
-        os.remove("final.png")
-        return await lel.delete()
     else:
         callsmusic.pytgcalls.join_group_call(message.chat.id, file_path)
         await message.reply_photo(
-        photo="final.png",
-        reply_markup=keyboard,
-        caption="▶️ **Playing** here the song requested by {} via Music VC Bot".format(
-        message.from_user.mention()
-        ),
-    )
-        os.remove("final.png")
-        return await lel.delete()
+            photo="final.png",
+            reply_markup=keyboard,
+            caption=f"▶️ **Playing** here the song requested by {message.from_user.mention()} via Music VC Bot",
+        )
+
+    os.remove("final.png")
+    return await lel.delete()
